@@ -1,0 +1,7 @@
+{% extends "base.html" %}{% block content %}<h1>Relatórios gerais</h1>
+<div class="grid">
+<div class="card"><div class="muted">Vendas acumuladas</div><div class="metric">{{ total|floatformat:2 }} MT</div></div>
+<div class="card"><div class="muted">Custo estimado dos produtos vendidos</div><div class="metric">{{ gross_profit|floatformat:2 }} MT</div><div class="muted">Margem bruta em valor, antes das despesas</div></div>
+<div class="card"><div class="muted">Despesas registadas</div><div class="metric">{{ expenses|floatformat:2 }} MT</div></div>
+<div class="card"><div class="muted">Resultado estimado</div><div class="metric">{{ net_estimate|floatformat:2 }} MT</div></div>
+</div><div class="card"><p>Quantidade de vendas: <strong>{{ sales_count }}</strong></p><p class="muted">Este relatório apresenta valores acumulados desde o início do registo.</p></div>{% endblock %}

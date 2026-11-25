@@ -1,0 +1,2 @@
+{% extends "base.html" %}{% block content %}<h1>{% if is_owner %}Todas as vendas{% else %}As minhas vendas{% endif %}</h1>
+<div class="card"><table><tr><th>Venda</th><th>Trabalhador</th><th>Data</th><th>Pagamento</th><th>Total</th></tr>{% for s in sales %}<tr><td>#{{ s.id }}</td><td>{{ s.worker.username }}</td><td>{{ s.created_at|date:"d/m/Y H:i" }}</td><td>{{ s.get_payment_method_display }}</td><td>{{ s.total|floatformat:2 }} MT</td></tr>{% empty %}<tr><td colspan="5">Sem vendas.</td></tr>{% endfor %}</table></div>{% endblock %}

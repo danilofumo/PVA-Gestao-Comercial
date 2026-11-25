@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h1>Trabalhadores</h1>
+
+{% if invite_url %}
+<div class="card">
+    <h2>Convite criado</h2>
+    <p>Envia este convite ao trabalhador. O link expira em 48 horas e só pode ser utilizado uma vez.</p>
+
+    <p>
+        <a class="btn" href="{{ whatsapp_url }}" target="_blank" rel="noopener">
+            Enviar convite pelo WhatsApp
+        </a>
+    </p>
+
+    <p>Link individual do trabalhador:</p>
+    <p>
+        <a href="{{ invite_url }}">{{ invite_url }}</a>
+    </p>
+</div>
+{% endif %}
+
+<div class="card">
+    <h2>Criar trabalhador</h2>
+    <p class="muted">A conta ficará pendente até o trabalhador abrir o convite e definir a sua palavra-passe.</p>
+
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button>Criar conta e gerar convite</button>
+    </form>
+</div>
+
+<div class="card">
+    <h2>Equipa</h2>
+    <table>
+        <tr>
+            <th>Nome</th>
+            <th>Telefone</th>
+            <th>Estado</th>
+            <th>Ação</th>
+        </tr>
+
+        {% for m in people %}
+        <tr>
+            <td>{{ m.user.first_name|default:m.user.username }}</td>
+            <td>{{ m.phone|default:"—" }}</td>
+            <td>
+                {% if not m.user.is_active %}
+                    Pendente
+                {% elif m.active %}
+                    Activo
+                {% else %}
+                    Inactivo
+                {% endif %}
+            </td>
+            <td>
+                <form method="post" action="{% url 'toggle_worker' m.pk %}">
+                    {% csrf_token %}
+                    <button class="secondary">
+                        {% if m.active %}Desactivar{% else %}Activar{% endif %}
+                    </button>
+                </form>
+            </td>
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="4">Sem trabalhadores registados.</td>
+        </tr>
+        {% endfor %}
+    </table>
+</div>
+
+{% endblock %}

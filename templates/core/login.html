@@ -1,0 +1,4 @@
+{% extends "base.html" %}{% block title %}Entrar · PVA{% endblock %}
+{% block content %}<div class="card" style="max-width:440px;margin:35px auto"><h1>Bem-vindo ao PVA</h1><p class="muted">Acede à tua conta comercial.</p>
+<form method="post">{% csrf_token %}{{ form.as_p }}<button type="submit">Entrar</button></form>
+<p class="muted">Ainda não tens conta? <a href="{% url 'register' %}">Criar estabelecimento</a></p></div>{% endblock %}

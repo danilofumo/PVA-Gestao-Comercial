@@ -1,0 +1,12 @@
+{% extends "base.html" %}{% block content %}
+<h1>{{ establishment.name }}</h1><p class="muted">Painel de {% if membership.role == "owner" %}proprietário{% else %}trabalhador{% endif %} · Hoje</p>
+<div class="grid">
+<div class="card"><div class="muted">Vendas de hoje</div><div class="metric">{{ total_sales|floatformat:2 }} MT</div></div>
+<div class="card"><div class="muted">Produtos ativos</div><div class="metric">{{ product_count }}</div></div>
+<div class="card"><div class="muted">Produtos com stock baixo</div><div class="metric">{{ low_stock }}</div></div>
+{% if worker_count != None %}<div class="card"><div class="muted">Trabalhadores ativos</div><div class="metric">{{ worker_count }}</div></div>{% endif %}
+{% if membership.role == "worker" %}<div class="card"><div class="muted">As minhas vendas hoje</div><div class="metric">{{ my_sales|floatformat:2 }} MT</div></div>{% endif %}
+</div>
+<div class="card"><h2>Ações rápidas</h2><p>{% if membership.role == "worker" %}<a class="btn" href="{% url 'sale_create' %}">Registar venda</a>{% endif %} <a class="btn secondary" href="{% url 'products' %}">Consultar produtos</a> <a class="btn secondary" href="{% url 'cash_list' %}">Gerir caixa</a></p></div>
+<div class="card"><h2>Vendas recentes</h2><table><tr><th>N.º</th><th>Trabalhador</th><th>Data</th><th>Total</th></tr>{% for s in recent_sales %}<tr><td>#{{ s.id }}</td><td>{{ s.worker.username }}</td><td>{{ s.created_at|date:"d/m/Y H:i" }}</td><td>{{ s.total|floatformat:2 }} MT</td></tr>{% empty %}<tr><td colspan="4">Ainda não existem vendas hoje.</td></tr>{% endfor %}</table></div>
+{% endblock %}

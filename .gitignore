@@ -1,0 +1,10 @@
+db.sqlite3
+db-*.sqlite3
+*.pyc
+__pycache__/
+.venv/
+venv/
+.env
+core/migrations/__pycache__/
+*-backup.py
+*-backup.sqlite3

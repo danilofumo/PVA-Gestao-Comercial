@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="pt">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{% block title %}PVA-Gestão Comercial{% endblock %}</title>
+<style>
+:root{--navy:#173d72;--blue:#2785cf;--bg:#f3f6fa;--ink:#172333;--muted:#687789;--line:#e2e8f0}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:15px system-ui,-apple-system,Segoe UI,sans-serif}
+header{background:var(--navy);color:white;padding:16px max(16px,calc((100% - 1050px)/2));display:flex;align-items:center;justify-content:space-between;gap:12px}
+.brand{font-weight:800;letter-spacing:.5px}.brand small{display:block;font-size:10px;font-weight:500;opacity:.8}
+nav{display:flex;gap:8px;flex-wrap:wrap;background:#fff;padding:10px max(12px,calc((100% - 1050px)/2));border-bottom:1px solid var(--line)}
+nav a{color:var(--navy);text-decoration:none;padding:8px 10px;border-radius:8px;font-size:13px;font-weight:650}
+nav a:hover{background:#eaf3fc}main{max-width:1050px;margin:22px auto;padding:0 14px}
+h1{font-size:25px;margin:4px 0 16px}h2{font-size:18px;margin:0 0 12px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px}
+.card{background:white;border:1px solid var(--line);border-radius:14px;padding:16px;margin-bottom:14px;box-shadow:0 2px 8px #132b4408}
+.metric{font-size:25px;font-weight:800;color:var(--navy);margin-top:5px}.muted{color:var(--muted);font-size:13px}
+a.btn,button{display:inline-block;background:var(--blue);color:white;border:0;border-radius:9px;padding:10px 14px;text-decoration:none;font-weight:700;cursor:pointer}
+.btn.secondary{background:#eaf1f8;color:var(--navy)}.btn.danger{background:#b93838}
+input,select,textarea{width:100%;padding:11px;border:1px solid #cbd5e1;border-radius:8px;margin:5px 0 12px;font:inherit;background:white}
+label{font-weight:650;font-size:13px}form p{margin:0}table{width:100%;border-collapse:collapse;font-size:14px}th,td{text-align:left;padding:10px 8px;border-bottom:1px solid var(--line)}th{color:var(--muted);font-size:12px}
+.msg{padding:11px;border-radius:9px;background:#e8f5ed;margin:8px 0}.errorlist{color:#b42318}
+footer{text-align:center;color:var(--muted);padding:25px;font-size:12px}
+@media(max-width:600px){header{align-items:flex-start}nav{gap:2px}nav a{padding:8px 7px;font-size:12px}main{margin:15px auto}table{font-size:12px}th,td{padding:8px 5px}}
+</style>
+</head>
+<body>
+<header><div class="brand">PVA <small>GESTÃO COMERCIAL</small></div>
+{% if user.is_authenticated %}<form method="post" action="{% url 'logout' %}">{% csrf_token %}<button class="secondary" style="background:#fff;color:#173d72">Sair</button></form>{% endif %}</header>
+{% if user.is_authenticated %}
+<nav>
+<a href="{% url 'dashboard' %}">Painel</a><a href="{% url 'products' %}">Produtos</a>{% if request.user.memberships.first.role == "worker" %}<a href="{% url 'sale_create' %}">Nova venda</a>{% endif %}<a href="{% url 'sales_list' %}">Vendas</a><a href="{% url 'cash_list' %}">Caixas</a>
+{% if request.user.memberships.first.role == "owner" %}<a href="{% url 'workers' %}">Trabalhadores</a><a href="{% url 'expense_create' %}">Despesas</a><a href="{% url 'reports' %}">Relatórios</a>{% endif %}
+</nav>{% endif %}
+<main>
+{% if messages %}{% for message in messages %}<div class="msg">{{ message }}</div>{% endfor %}{% endif %}
+{% block content %}{% endblock %}
+</main><footer>PVA-Gestão Comercial · Gestão simples e organizada</footer>
+</body></html>
